@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trumy Buita</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-title">Trumy Buita</div>
+      <button id="menuToggle" class="topbar-action">☰</button>
+    </header>
+
+    <main class="page-content" id="pageContent">
+      <section class="page page-home active" data-page="home">
+        <div class="home-banner">
+          <div>
+            <div class="banner-title">Minuman & Camilan Sekolah</div>
+            <p class="banner-subtitle">Pesan cepat dari mitra sekolah favoritmu.</p>
+          </div>
+        </div>
+
+        <div class="search-card">
+          <input id="searchInput" type="search" placeholder="Cari produk..." />
+        </div>
+
+        <div class="section-heading">
+          <h2>Produk Populer</h2>
+          <div class="category-list" id="categoryList"></div>
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+
+      <section class="page page-mitra" data-page="mitra">
+        <div class="section-heading">
+          <h2>Mitra</h2>
+          <p class="section-description">Lihat profil mitra dan detail penjual.</p>
+        </div>
+        <div id="mitraList" class="list-card"></div>
+      </section>
+
+      <section class="page page-produk" data-page="produk">
+        <div class="section-heading">
+          <h2>Produk</h2>
+          <p class="section-description">Filter berdasarkan kategori.</p>
+        </div>
+        <div class="filter-row">
+          <select id="filterCategory">
+            <option value="all">Semua Kategori</option>
+          </select>
+          <button id="toggleView" class="btn-secondary">Grid/List</button>
+        </div>
+        <div class="product-list" id="productList"></div>
+      </section>
+
+      <section class="page page-akun" data-page="akun">
+        <div class="section-heading">
+          <h2>Akun</h2>
+        </div>
+        <div id="accountSection" class="card"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-target="home">🏠<span>Home</span></button>
+      <button class="nav-item" data-target="mitra">🤝<span>Mitra</span></button>
+      <button class="nav-item" data-target="produk">🛍️<span>Produk</span></button>
+      <button class="nav-item" data-target="akun">👤<span>Akun</span></button>
+    </nav>
+  </div>
+
+  <div id="detailModal" class="modal hidden">
+    <div class="modal-panel">
+      <button id="closeModal" class="modal-close">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="JS/app.js"></script>
+</body>
+</html>
