@@ -119,7 +119,7 @@ const renderHome = () => {
 const renderProductCard = (item) => {
   return `
     <article class="product-card" data-id="${item.produk_id}">
-      <img src="${getGoogleDriveImageUrl(item.produk_image)}" alt="${item.produk_name}" onerror="this.style.display='none'" />
+      <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
       <div class="product-info">
         <h3 class="product-name">${item.produk_name}</h3>
         <div class="product-meta">
@@ -154,7 +154,7 @@ const renderProduk = () => {
     if (isListView) {
       return `
         <article class="product-row" data-id="${item.produk_id}">
-          <img src="${getGoogleDriveImageUrl(item.produk_image)}" alt="${item.produk_name}" onerror="this.style.display='none'" />
+          <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
           <div class="product-row-info">
             <h3>${item.produk_name}</h3>
             <small>${item.produk_category} • ${item.sekolah}</small>
@@ -165,7 +165,7 @@ const renderProduk = () => {
     }
     return `
       <article class="product-card" data-id="${item.produk_id}">
-        <img src="${getGoogleDriveImageUrl(item.produk_image)}" alt="${item.produk_name}" onerror="this.style.display='none'" />
+        <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
         <div class="product-info">
           <h3 class="product-name">${item.produk_name}</h3>
           <div class="product-meta">
@@ -228,7 +228,7 @@ const openProductDetail = (productId) => {
   if (!product) return;
   modalContent.innerHTML = `
     <h3>${product.produk_name}</h3>
-    <img src="${getGoogleDriveImageUrl(product.produk_image)}" alt="${product.produk_name}" onerror="this.style.display='none'" />
+    <img src="${product.produk_image}" alt="${product.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(product.produk_image)}'" />
     <div class="modal-meta">
       <div><strong>Harga</strong><span>Rp ${product.produk_price}</span></div>
       <div><strong>Stok</strong><span>${product.produk_stock}</span></div>
