@@ -26,7 +26,7 @@ const getGoogleDriveImageUrl = (sharingUrl) => {
 
   const driveIdMatch = sharingUrl.match(/\/d\/([a-zA-Z0-9-_]+)/) || sharingUrl.match(/[?&]id=([a-zA-Z0-9-_]+)/);
   if (driveIdMatch) {
-    return `https://drive.google.com/uc?export=view&id=${driveIdMatch[1]}`;
+    return `https://lh3.googleusercontent.com/id/${driveIdMatch[1]}`;
   }
 
   return sharingUrl;
