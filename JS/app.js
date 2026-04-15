@@ -21,6 +21,17 @@ let user = {
   name: localStorage.getItem('tb_user_name') || '',
 };
 
+const getGoogleDriveImageUrl = (sharingUrl) => {
+  if (!sharingUrl) return '';
+
+  const driveIdMatch = sharingUrl.match(/\/d\/([a-zA-Z0-9-_]+)/) || sharingUrl.match(/[?&]id=([a-zA-Z0-9-_]+)/);
+  if (driveIdMatch) {
+    return `https://drive.google.com/uc?export=view&id=${driveIdMatch[1]}`;
+  }
+
+  return sharingUrl;
+};
+
 const pagesMap = {
   home: document.querySelector('.page-home'),
   mitra: document.querySelector('.page-mitra'),
@@ -108,7 +119,7 @@ const renderHome = () => {
 const renderProductCard = (item) => {
   return `
     <article class="product-card" data-id="${item.produk_id}">
-      <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.src='https://via.placeholder.com/400x260?text=' + encodeURIComponent('${item.produk_name}')" />
+      <img src="${getGoogleDriveImageUrl(item.produk_image)}" alt="${item.produk_name}" onerror="this.style.display='none'" />
       <div class="product-info">
         <h3 class="product-name">${item.produk_name}</h3>
         <div class="product-meta">
@@ -143,7 +154,7 @@ const renderProduk = () => {
     if (isListView) {
       return `
         <article class="product-row" data-id="${item.produk_id}">
-          <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.src='https://via.placeholder.com/120?text=' + encodeURIComponent('${item.produk_name}')" />
+          <img src="${getGoogleDriveImageUrl(item.produk_image)}" alt="${item.produk_name}" onerror="this.style.display='none'" />
           <div class="product-row-info">
             <h3>${item.produk_name}</h3>
             <small>${item.produk_category} • ${item.sekolah}</small>
@@ -154,7 +165,7 @@ const renderProduk = () => {
     }
     return `
       <article class="product-card" data-id="${item.produk_id}">
-        <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.src='https://via.placeholder.com/400x260?text=' + encodeURIComponent('${item.produk_name}')" />
+        <img src="${getGoogleDriveImageUrl(item.produk_image)}" alt="${item.produk_name}" onerror="this.style.display='none'" />
         <div class="product-info">
           <h3 class="product-name">${item.produk_name}</h3>
           <div class="product-meta">
@@ -217,7 +228,7 @@ const openProductDetail = (productId) => {
   if (!product) return;
   modalContent.innerHTML = `
     <h3>${product.produk_name}</h3>
-    <img src="${product.produk_image}" alt="${product.produk_name}" onerror="this.src='https://via.placeholder.com/720x420?text=' + encodeURIComponent('${product.produk_name}')" />
+    <img src="${getGoogleDriveImageUrl(product.produk_image)}" alt="${product.produk_name}" onerror="this.style.display='none'" />
     <div class="modal-meta">
       <div><strong>Harga</strong><span>Rp ${product.produk_price}</span></div>
       <div><strong>Stok</strong><span>${product.produk_stock}</span></div>
