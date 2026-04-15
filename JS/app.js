@@ -135,9 +135,12 @@ const renderMitra = () => {
   mitraList.innerHTML = mitras.map((mitra) => {
     return `
       <article class="mitra-card" data-id="${mitra.mitra_id}">
-        <h3>${mitra.mitra_name}</h3>
-        <p>${mitra.kategori}</p>
-        <p>${mitra.sekolah}</p>
+        <div class="mitra-avatar">${mitra.mitra_name.charAt(0).toUpperCase()}</div>
+        <div class="mitra-info">
+          <h3>${mitra.mitra_name}</h3>
+          <p>${mitra.kategori}</p>
+          <p>${mitra.sekolah}</p>
+        </div>
       </article>
     `;
   }).join('');
