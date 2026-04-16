@@ -135,9 +135,13 @@ const renderHome = () => {
 };
 
 const renderProductCard = (item) => {
+  // Coba gunakan gambar lokal jika ada
+  const localImageName = item.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
+  const localImagePath = `DATA/IMAGES/${localImageName}`;
+
   return `
     <article class="product-card" data-id="${item.produk_id}">
-      <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
+      <img src="${localImagePath}" alt="${item.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
       <div class="product-info">
         <h3 class="product-name">${item.produk_name}</h3>
         <div class="product-meta">
@@ -172,10 +176,14 @@ const renderProduk = () => {
     return;
   }
   productList.innerHTML = items.map((item) => {
+    // Coba gunakan gambar lokal jika ada
+    const localImageName = item.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
+    const localImagePath = `DATA/IMAGES/${localImageName}`;
+
     if (isListView) {
       return `
         <article class="product-row" data-id="${item.produk_id}">
-          <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
+          <img src="${localImagePath}" alt="${item.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
           <div class="product-row-info">
             <h3>${item.produk_name}</h3>
             <small>${item.produk_category} • ${item.sekolah}</small>
@@ -186,7 +194,7 @@ const renderProduk = () => {
     }
     return `
       <article class="product-card" data-id="${item.produk_id}">
-        <img src="${item.produk_image}" alt="${item.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
+        <img src="${localImagePath}" alt="${item.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
         <div class="product-info">
           <h3 class="product-name">${item.produk_name}</h3>
           <div class="product-meta">
@@ -203,10 +211,15 @@ const renderProductTable = () => {
   const productTableBody = document.getElementById('productTableBody');
   if (!productTableBody) return;
 
-  productTableBody.innerHTML = products.map(product => `
+  productTableBody.innerHTML = products.map(product => {
+    // Coba gunakan gambar lokal jika ada
+    const localImageName = product.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
+    const localImagePath = `DATA/IMAGES/${localImageName}`;
+
+    return `
     <tr>
       <td>
-        <img src="${getGoogleDriveImageUrl(product.produk_image)}" alt="${product.produk_name}" class="product-table-img" onclick="openProductDetail('${product.produk_id}')" />
+        <img src="${localImagePath}" alt="${product.produk_name}" class="product-table-img" onclick="openProductDetail('${product.produk_id}')" onerror="this.src='${getGoogleDriveImageUrl(product.produk_image)}'" />
       </td>
       <td>${product.produk_name}</td>
       <td>Rp ${product.produk_price}</td>
@@ -214,7 +227,7 @@ const renderProductTable = () => {
         <button class="btn-primary" onclick="addToCart('${product.produk_id}')">Tambah ke Keranjang</button>
       </td>
     </tr>
-  `).join('');
+  `}).join('');
 };
 
 const renderCart = () => {
@@ -322,34 +335,25 @@ const renderLoginForm = () => {
   };
 };
 
-const renderProductTable = () => {
-  const tableBody = document.getElementById('productTableBody');
-  tableBody.innerHTML = products.map((product) => `
-    <tr>
-      <td><img src="${product.produk_image}" alt="${product.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(product.produk_image)}'" /></td>
-      <td>${product.produk_name}</td>
-      <td>Rp ${product.produk_price}</td>
-    </tr>
-  `).join('');
-};
-
 const openProductDetail = (productId) => {
   const product = products.find((item) => item.produk_id === productId);
   if (!product) return;
+
+  // Coba gunakan gambar lokal jika ada
+  const localImageName = product.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
+  const localImagePath = `DATA/IMAGES/${localImageName}`;
+
   modalContent.innerHTML = `
     <h3>${product.produk_name}</h3>
-    <img src="${product.produk_image}" alt="${product.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(product.produk_image)}'" />
+    <img src="${localImagePath}" alt="${product.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(product.produk_image)}'" />
     <div class="modal-meta">
       <div><strong>Harga</strong><span>Rp ${product.produk_price}</span></div>
       <div><strong>Stok</strong><span>${product.produk_stock}</span></div>
       <div><strong>Kategori</strong><span>${product.produk_category}</span></div>
       <div><strong>Mitra</strong><span>${product.sekolah}</span></div>
     </div>
-    <button id="buyBtn">Lihat Detail Produk</button>
+    <button id="buyBtn" class="btn-primary" onclick="addToCart('${product.produk_id}')">Tambah ke Keranjang</button>
   `;
-  document.getElementById('buyBtn').onclick = () => {
-    alert('Detail produk: ' + product.produk_name);
-  };
   detailModal.classList.remove('hidden');
 };
 

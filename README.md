@@ -8,18 +8,32 @@ Prototipe web app mobile untuk Trumy Buita dengan menu navigasi bottom.
 - `JS/app.js` - Logika interaksi
 - `DATA/tabel produk_rows.json` - Data produk
 - `DATA/tabel_mitra_rows.json` - Data mitra
-- `DATA/IMAGES/` - Folder untuk gambar produk (kosong untuk sekarang)
+- `DATA/IMAGES/` - Folder untuk gambar produk
+- `download_images.js` - Script Node.js untuk download gambar
+- `download_images.ps1` - Script PowerShell untuk download gambar
 
 ## Cara Menampilkan Gambar
-Gambar produk sekarang menggunakan path lokal di folder `DATA/IMAGES/`.
+Gambar produk sekarang menggunakan path lokal di folder `DATA/IMAGES/`. Script download sudah tersedia untuk mengunduh gambar dari Google Drive.
 
-### Menambahkan Gambar Produk:
+### Menggunakan Script Download:
+1. Jalankan script download untuk mengunduh semua gambar:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File download_images.ps1
+   ```
+   atau
+   ```bash
+   node download_images.js
+   ```
+
+2. Script akan mengunduh gambar ke folder `DATA/IMAGES/` dengan nama file berdasarkan nama produk.
+
+### Menambahkan Gambar Manual:
 1. Unduh gambar produk dari Google Drive atau sumber lain
-2. Simpan di folder `DATA/IMAGES/` dengan nama file sesuai data JSON (misal `creamy_latte.jpg`)
-3. Pastikan nama file sesuai dengan yang ada di `produk_image` di JSON
+2. Simpan di folder `DATA/IMAGES/` dengan nama file sesuai pola: `nama_produk.jpg` (lowercase, spasi diganti underscore)
+3. Pastikan nama file sesuai dengan yang diharapkan aplikasi
 
 ### Jika Gambar Tidak Ada:
-Aplikasi akan otomatis menampilkan placeholder dengan nama produk menggunakan Via Placeholder.
+Aplikasi akan otomatis menampilkan gambar dari Google Drive sebagai fallback.
 
 ## Menjalankan Aplikasi
 Buka `index.html` di browser web. Untuk fetch data JSON, gunakan server lokal seperti:
@@ -28,9 +42,11 @@ Buka `index.html` di browser web. Untuk fetch data JSON, gunakan server lokal se
 - Atau server web lainnya
 
 ## Fitur
-- Home: Banner, search, list produk populer
-- Mitra: List mitra dengan detail
-- Produk: Grid/list view dengan filter kategori
-- Akun: Login sederhana dengan penyimpanan localStorage
+- Home: Banner, search, list produk populer, tabel produk lengkap
+- Keranjang: Sistem keranjang belanja dengan localStorage
+- Riwayat: Halaman riwayat pemesanan (placeholder)
+- Profil: Halaman profil pengguna
 - Bottom navigation untuk berpindah halaman
 - Modal untuk detail produk/mitra
+- Tabel produk interaktif dengan gambar yang bisa diklik
+- Sistem keranjang dengan badge notifikasi
