@@ -52,6 +52,7 @@ const loadData = async () => {
   renderMitra();
   renderProduk();
   renderAccount();
+  renderProductTable();
 };
 
 const setPage = (target) => {
@@ -224,6 +225,17 @@ const renderLoginForm = () => {
     localStorage.setItem('tb_user_email', email);
     renderAccount();
   };
+};
+
+const renderProductTable = () => {
+  const tableBody = document.getElementById('productTableBody');
+  tableBody.innerHTML = products.map((product) => `
+    <tr>
+      <td><img src="${product.produk_image}" alt="${product.produk_name}" onerror="this.onerror=null; this.src='${getGoogleDriveImageUrl(product.produk_image)}'" /></td>
+      <td>${product.produk_name}</td>
+      <td>Rp ${product.produk_price}</td>
+    </tr>
+  `).join('');
 };
 
 const openProductDetail = (productId) => {

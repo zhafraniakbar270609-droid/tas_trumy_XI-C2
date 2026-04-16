@@ -718,6 +718,50 @@ button {
   gap: 12px;
 }
 
+.product-table-container {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 12px var(--shadow);
+  overflow-x: auto;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.product-table th,
+.product-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.product-table th {
+  background: var(--secondary);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.product-table td img {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--secondary);
+}
+
+.product-table td:nth-child(2) {
+  font-weight: 600;
+}
+
+.product-table td:nth-child(3) {
+  color: var(--primary);
+  font-weight: 600;
+}
+
 .history-card ul {
   list-style: none;
   padding: 0;
