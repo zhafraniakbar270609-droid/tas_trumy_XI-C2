@@ -11,68 +11,79 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="topbar-title">Trumy Buita</div>
-      <button id="menuToggle" class="topbar-action">☰</button>
+      <button id="menuToggle" class="topbar-action" aria-label="Menu">☰</button>
     </header>
 
     <main class="page-content" id="pageContent">
       <section class="page page-home active" data-page="home">
         <div class="home-banner">
           <div>
+            <div class="banner-overline">Selamat datang di Trumy Buita</div>
             <div class="banner-title">Minuman & Camilan Sekolah</div>
-            <p class="banner-subtitle">Pesan cepat dari mitra sekolah favoritmu.</p>
+            <p class="banner-subtitle">Temukan produk terbaik dari mitra sekolah favoritmu.</p>
           </div>
+          <div class="banner-chip">Diskon 10% untuk pemesanan pertama</div>
         </div>
 
         <div class="search-card">
           <div class="search-input-wrapper">
             <input id="searchInput" type="search" placeholder="Cari produk..." />
-            <span class="search-icon">🔍</span>
+            <span class="search-icon">🔎</span>
           </div>
         </div>
 
         <div class="section-heading">
+          <h2>Jelajahi Kategori</h2>
+          <button class="btn-secondary" id="showAll">Lihat Semua</button>
+        </div>
+        <div class="category-list" id="categoryList"></div>
+
+        <div class="section-heading">
           <h2>Produk Populer</h2>
-          <div class="category-list" id="categoryList"></div>
+          <span class="section-subtitle">Cepat, segar, dan langsung siap dikirim.</span>
         </div>
-
         <div class="product-grid" id="productGrid"></div>
+
+        <div class="section-heading mt-24">
+          <h2>Mitra Sekolah</h2>
+          <span class="section-subtitle">Mitra pilihan dengan kualitas terjamin.</span>
+        </div>
+        <div class="partner-row" id="partnerList"></div>
       </section>
 
-      <section class="page page-mitra" data-page="mitra">
-        <div class="section-heading">
-          <h2>Mitra</h2>
-          <p class="section-description">Lihat profil mitra dan detail penjual.</p>
+      <section class="page page-cart" data-page="cart">
+        <div class="page-title-row">
+          <div>
+            <h2>Keranjang</h2>
+            <p class="section-description">Kelola pesananmu sebelum checkout.</p>
+          </div>
         </div>
-        <div id="mitraList" class="list-card"></div>
+        <div id="cartList"></div>
+        <div class="cart-summary" id="cartSummary"></div>
       </section>
 
-      <section class="page page-produk" data-page="produk">
+      <section class="page page-history" data-page="history">
         <div class="section-heading">
-          <h2>Produk</h2>
-          <p class="section-description">Filter berdasarkan kategori.</p>
+          <h2>Riwayat Pemesanan</h2>
+          <span class="section-subtitle">Lihat pesanan yang sudah selesai.</span>
         </div>
-        <div class="filter-row">
-          <select id="filterCategory">
-            <option value="all">Semua Kategori</option>
-          </select>
-          <button id="toggleView" class="btn-secondary">Grid/List</button>
-        </div>
-        <div class="product-list" id="productList"></div>
+        <div id="historyList" class="history-list"></div>
       </section>
 
-      <section class="page page-akun" data-page="akun">
+      <section class="page page-profile" data-page="profile">
         <div class="section-heading">
-          <h2>Akun</h2>
+          <h2>Profil</h2>
+          <span class="section-subtitle">Kelola akun dan data pemesanan.</span>
         </div>
-        <div id="accountSection" class="card"></div>
+        <div id="profileSection"></div>
       </section>
     </main>
 
     <nav class="bottom-nav">
-      <button class="nav-item active" data-target="home">🏠<span>Home</span></button>
-      <button class="nav-item" data-target="mitra">🤝<span>Mitra</span></button>
-      <button class="nav-item" data-target="produk">🛍️<span>Produk</span></button>
-      <button class="nav-item" data-target="akun">👤<span>Akun</span></button>
+      <button class="nav-item active" data-target="home">🏠<span>Beranda</span></button>
+      <button class="nav-item" data-target="cart">🛒<span>Keranjang</span><span class="nav-badge" id="cartBadge"></span></button>
+      <button class="nav-item" data-target="history">🕑<span>Riwayat</span></button>
+      <button class="nav-item" data-target="profile">👤<span>Profile</span></button>
     </nav>
   </div>
 
