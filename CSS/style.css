@@ -608,6 +608,11 @@ button {
   font-weight: 700;
 }
 
+.cart-total {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
 .cart-actions {
   display: flex;
   gap: 12px;
@@ -760,6 +765,20 @@ button {
 .product-table td:nth-child(3) {
   color: var(--primary);
   font-weight: 600;
+}
+
+.product-table .product-table-img {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.product-table .product-table-img:hover {
+  transform: scale(1.05);
+}
+
+.product-table button {
+  padding: 8px 12px;
+  font-size: 0.8rem;
 }
 
 .history-card ul {

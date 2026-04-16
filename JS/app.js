@@ -20,6 +20,7 @@ let user = {
   email: localStorage.getItem('tb_user_email') || '',
   name: localStorage.getItem('tb_user_name') || '',
 };
+let cart = JSON.parse(localStorage.getItem('tb_cart')) || [];
 
 const getGoogleDriveImageUrl = (sharingUrl) => {
   if (!sharingUrl) return '';
@@ -30,6 +31,21 @@ const getGoogleDriveImageUrl = (sharingUrl) => {
   }
 
   return sharingUrl;
+};
+
+const addToCart = (productId) => {
+  const product = products.find(p => p.produk_id === productId);
+  if (!product) return;
+
+  const existing = cart.find(item => item.produk_id === productId);
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+  localStorage.setItem('tb_cart', JSON.stringify(cart));
+  alert(`${product.produk_name} ditambahkan ke keranjang!`);
+  renderCart();
 };
 
 const pagesMap = {
@@ -53,6 +69,7 @@ const loadData = async () => {
   renderProduk();
   renderAccount();
   renderProductTable();
+  renderCart();
 };
 
 const setPage = (target) => {
@@ -182,6 +199,84 @@ const renderProduk = () => {
   }).join('');
 };
 
+const renderProductTable = () => {
+  const productTableBody = document.getElementById('productTableBody');
+  if (!productTableBody) return;
+
+  productTableBody.innerHTML = products.map(product => `
+    <tr>
+      <td>
+        <img src="${getGoogleDriveImageUrl(product.produk_image)}" alt="${product.produk_name}" class="product-table-img" onclick="openProductDetail('${product.produk_id}')" />
+      </td>
+      <td>${product.produk_name}</td>
+      <td>Rp ${product.produk_price}</td>
+      <td>
+        <button class="btn-primary" onclick="addToCart('${product.produk_id}')">Tambah ke Keranjang</button>
+      </td>
+    </tr>
+  `).join('');
+};
+
+const renderCart = () => {
+  const cartList = document.getElementById('cartList');
+  const cartSummary = document.getElementById('cartSummary');
+  const cartBadge = document.getElementById('cartBadge');
+
+  if (!cartList || !cartSummary) return;
+
+  if (cart.length === 0) {
+    cartList.innerHTML = '<p class="muted">Keranjang kosong.</p>';
+    cartSummary.innerHTML = '';
+    if (cartBadge) cartBadge.textContent = '';
+    return;
+  }
+
+  cartList.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <img src="${getGoogleDriveImageUrl(item.produk_image)}" alt="${item.produk_name}" />
+      <div class="cart-item-info">
+        <h4>${item.produk_name}</h4>
+        <p>Rp ${item.produk_price} x ${item.quantity}</p>
+      </div>
+      <div class="cart-item-controls">
+        <button onclick="updateCartQuantity('${item.produk_id}', ${item.quantity - 1})">-</button>
+        <span>${item.quantity}</span>
+        <button onclick="updateCartQuantity('${item.produk_id}', ${item.quantity + 1})">+</button>
+        <button onclick="removeFromCart('${item.produk_id}')">Hapus</button>
+      </div>
+    </div>
+  `).join('');
+
+  const total = cart.reduce((sum, item) => sum + (parseInt(item.produk_price.replace('.', '')) * item.quantity), 0);
+  cartSummary.innerHTML = `
+    <div class="cart-total">
+      <strong>Total: Rp ${total.toLocaleString('id-ID')}</strong>
+    </div>
+    <button class="btn-primary">Checkout</button>
+  `;
+
+  if (cartBadge) cartBadge.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+};
+
+const updateCartQuantity = (productId, newQuantity) => {
+  if (newQuantity <= 0) {
+    removeFromCart(productId);
+    return;
+  }
+  const item = cart.find(item => item.produk_id === productId);
+  if (item) {
+    item.quantity = newQuantity;
+    localStorage.setItem('tb_cart', JSON.stringify(cart));
+    renderCart();
+  }
+};
+
+const removeFromCart = (productId) => {
+  cart = cart.filter(item => item.produk_id !== productId);
+  localStorage.setItem('tb_cart', JSON.stringify(cart));
+  renderCart();
+};
+
 const renderAccount = () => {
   if (user.email) {
     accountSection.innerHTML = `
@@ -273,6 +368,12 @@ const openMitraDetail = (mitraId) => {
   `;
   detailModal.classList.remove('hidden');
 };
+
+// Make functions global for onclick
+window.openProductDetail = openProductDetail;
+window.addToCart = addToCart;
+window.updateCartQuantity = updateCartQuantity;
+window.removeFromCart = removeFromCart;
 
 pageButtons.forEach((button) => {
   button.addEventListener('click', () => setPage(button.dataset.target));
