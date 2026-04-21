@@ -56,20 +56,32 @@ const pagesMap = {
 };
 
 const loadData = async () => {
-  const [productRes, mitraRes] = await Promise.all([
-    fetch('DATA/tabel produk_rows.json'),
-    fetch('DATA/tabel_mitra_rows.json'),
-  ]);
+  try {
+    const [productRes, mitraRes] = await Promise.all([
+      fetch('DATA/tabel_produk_rows.json'),
+      fetch('DATA/tabel_mitra_rows.json'),
+    ]);
 
-  products = await productRes.json();
-  mitras = await mitraRes.json();
-  renderCategories();
-  renderHome();
-  renderMitra();
-  renderProduk();
-  renderAccount();
-  renderProductTable();
-  renderCart();
+    if (!productRes.ok) throw new Error('Gagal memuat data produk');
+    if (!mitraRes.ok) throw new Error('Gagal memuat data mitra');
+
+    products = await productRes.json();
+    mitras = await mitraRes.json();
+    
+    console.log('Produk loaded:', products.length);
+    console.log('Mitra loaded:', mitras.length);
+    
+    renderCategories();
+    renderHome();
+    renderMitra();
+    renderProduk();
+    renderAccount();
+    renderProductTable();
+    renderCart();
+  } catch (err) {
+    console.error('Error loading data:', err);
+    document.getElementById('productTableBody').innerHTML = `<tr><td colspan="4" style="color:red">Error: ${err.message}</td></tr>`;
+  }
 };
 
 const setPage = (target) => {
@@ -135,13 +147,11 @@ const renderHome = () => {
 };
 
 const renderProductCard = (item) => {
-  // Coba gunakan gambar lokal jika ada
-  const localImageName = item.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
-  const localImagePath = `DATA/IMAGES/${localImageName}`;
+  const imageUrl = getGoogleDriveImageUrl(item.produk_image);
 
   return `
     <article class="product-card" data-id="${item.produk_id}">
-      <img src="${localImagePath}" alt="${item.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
+      <img src="${imageUrl}" alt="${item.produk_name}" />
       <div class="product-info">
         <h3 class="product-name">${item.produk_name}</h3>
         <div class="product-meta">
@@ -176,14 +186,12 @@ const renderProduk = () => {
     return;
   }
   productList.innerHTML = items.map((item) => {
-    // Coba gunakan gambar lokal jika ada
-    const localImageName = item.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
-    const localImagePath = `DATA/IMAGES/${localImageName}`;
+    const imageUrl = getGoogleDriveImageUrl(item.produk_image);
 
     if (isListView) {
       return `
         <article class="product-row" data-id="${item.produk_id}">
-          <img src="${localImagePath}" alt="${item.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
+          <img src="${imageUrl}" alt="${item.produk_name}" />
           <div class="product-row-info">
             <h3>${item.produk_name}</h3>
             <small>${item.produk_category} • ${item.sekolah}</small>
@@ -194,7 +202,7 @@ const renderProduk = () => {
     }
     return `
       <article class="product-card" data-id="${item.produk_id}">
-        <img src="${localImagePath}" alt="${item.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(item.produk_image)}'" />
+        <img src="${imageUrl}" alt="${item.produk_name}" />
         <div class="product-info">
           <h3 class="product-name">${item.produk_name}</h3>
           <div class="product-meta">
@@ -212,14 +220,12 @@ const renderProductTable = () => {
   if (!productTableBody) return;
 
   productTableBody.innerHTML = products.map(product => {
-    // Coba gunakan gambar lokal jika ada
-    const localImageName = product.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
-    const localImagePath = `DATA/IMAGES/${localImageName}`;
+    const imageUrl = getGoogleDriveImageUrl(product.produk_image);
 
     return `
     <tr>
       <td>
-        <img src="${localImagePath}" alt="${product.produk_name}" class="product-table-img" onclick="openProductDetail('${product.produk_id}')" onerror="this.src='${getGoogleDriveImageUrl(product.produk_image)}'" />
+        <img src="${imageUrl}" alt="${product.produk_name}" class="product-table-img" onclick="openProductDetail('${product.produk_id}')" />
       </td>
       <td>${product.produk_name}</td>
       <td>Rp ${product.produk_price}</td>
@@ -339,13 +345,11 @@ const openProductDetail = (productId) => {
   const product = products.find((item) => item.produk_id === productId);
   if (!product) return;
 
-  // Coba gunakan gambar lokal jika ada
-  const localImageName = product.produk_name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') + '.jpg';
-  const localImagePath = `DATA/IMAGES/${localImageName}`;
+  const imageUrl = getGoogleDriveImageUrl(product.produk_image);
 
   modalContent.innerHTML = `
     <h3>${product.produk_name}</h3>
-    <img src="${localImagePath}" alt="${product.produk_name}" onerror="this.src='${getGoogleDriveImageUrl(product.produk_image)}'" />
+    <img src="${imageUrl}" alt="${product.produk_name}" />
     <div class="modal-meta">
       <div><strong>Harga</strong><span>Rp ${product.produk_price}</span></div>
       <div><strong>Stok</strong><span>${product.produk_stock}</span></div>
